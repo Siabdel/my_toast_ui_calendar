@@ -1,6 +1,11 @@
 
 <template>
-  <div id="calendar" style="height: 800px"></div>
+
+  <div id="calendar" style="height: 800px">
+
+  <h1> {{msg}}</h1>
+      {{ calendars.length }}
+  </div>
 </template>
 
 <script>
@@ -13,6 +18,10 @@ import "tui-time-picker/dist/tui-time-picker.css";
 export default {
   name: "tx-calendar",
   props: {
+    msg : {
+      type : String,
+      default : ""
+    },
     calendarView: {
       type: String,
       default: function () {
@@ -42,21 +51,6 @@ export default {
     return {
       calendar: null,
     };
-  },
-  created(){
-      //let url = `http://51.178.136.190:93/apipro/directories/`
-      let url = `http://localhost:8000/api/v1/prayer_time/`
-
-      //ajax load
-      fetch(url)
-          .then(response => response.json())
-          .then(json => {
-              this.calendar.schedules = json
-              console.log("created fetch in TxCalendar =" + json) 
-              })  
-          .catch(err => {
-              console.error(err)
-          });
   },
   watch: {
     calendars: {
@@ -103,6 +97,7 @@ export default {
      */
     addSchedule: function (schedules) {
       // ADD SCHEDULEs
+      console.log("addSchedule ...")
       this.calendar.createSchedules(schedules);
     },
     addCalendarsSchedules: function () {

@@ -38,6 +38,7 @@
     </select-->
 
     <tx-calendar
+      :msg="message"
       :calendars="foo"
       :hiddenCalendarsId="hiddenCalendarsId"
       :theme="defaultTheme"
@@ -173,12 +174,18 @@ var themeDefaultConfig = {
 };
 
 var data_schedules = [
+        {
+          id: "maintenances",
+          name: "My Calendar",
+          theme: themeDefaultConfig,
+          schedules_test: data_schedules,
+          schedules : [
             {
               "id": "1",
               "title": "Test ok my schedule **App**",
               "category": "time",
               "start": "2023-02-08T12:30:00+09:00",
-              "end": "2023-02-08T14:30:00+09:00",
+              "end": "2023-02-08T16:30:00+09:00",
               isPending: false,
               raw: { id: 111, whatisit: "raw option contains user datas" },
               customStyle: "scheduleTeste",
@@ -192,14 +199,50 @@ var data_schedules = [
               "id": "2",
               "title": "my schedule 2 **APP**",
               "category": "time",
-              "start": "2023-02-09T12:30:00+09:00",
-              "end": "2023-02-09T13:30:00+09:00",
-              bgColor: "red",
+              "start": "2023-02-09T14:30:00+09:00",
+              "end": "2023-02-09T15:30:00+09:00",
+              bgColor: "green",
               dragBgColor: "red",
               borderColor: "black",
               color: "white",
-            },
-          ];
+            }, 
+            {
+              id: "verifications",
+              name: "verifications",
+              color: "#00a9ff",
+              bgColor: "#00a9ff",
+              dragBgColor: "#00a9ff",
+              borderColor: "#00a9ff",
+              schedules: [
+                {
+                  id: "3",
+                  title: "my schedule 3",
+                  category: "time",
+                  dueDateClass: "",
+                  start: "2023-02-08T22:30:00+09:00",
+                  end: "2023-02-20T22:30:00+09:00",
+                  bgColor: "#00a6e6",
+                  dragBgColor: "red",
+                  borderColor: "black",
+                  color: "white",
+                },
+                {
+                  id: "4",
+                  title: "my schedule 4",
+                  category: "time",
+                  dueDateClass: "",
+                  start: "2023-02-25T22:30:00+09:00",
+                  end: "2023-02-30T22:30:00+09:00",
+                  bgColor: "#6c3a9e",
+                  dragBgColor: "red",
+                  borderColor: "black",
+                  color: "white",
+                },
+              ],
+              }
+          ] },
+
+];
 export default {
   name: "App",
   components: {
@@ -207,56 +250,16 @@ export default {
   },
   data: function () {
     return {
+      message : "",
+      data : data_schedules,
       currentCalendar: null,
       currentCalendarView: "month",
       defaultTheme: themeDefaultConfig,
       hiddenCalendarsId: [], // calendars id can be string like 'todo'
-      foo: [
-        {
-          id: "maintenances",
-          name: "My Calendar",
-          theme: themeDefaultConfig,
-          schedules_test: data_schedules,
-          schedules : [],
-        },
-        {
-          id: "verifications",
-          name: "verifications",
-          color: "#00a9ff",
-          bgColor: "#00a9ff",
-          dragBgColor: "#00a9ff",
-          borderColor: "#00a9ff",
-          schedules: [
-            {
-              id: "3",
-              title: "my schedule 3",
-              category: "time",
-              dueDateClass: "",
-              start: "2023-02-08T22:30:00+09:00",
-              end: "2023-02-20T22:30:00+09:00",
-              bgColor: "#00a6e6",
-              dragBgColor: "red",
-              borderColor: "black",
-              color: "white",
-            },
-            {
-              id: "4",
-              title: "my schedule 4",
-              category: "time",
-              dueDateClass: "",
-              start: "2023-02-25T22:30:00+09:00",
-              end: "2023-02-30T22:30:00+09:00",
-              bgColor: "#6c3a9e",
-              dragBgColor: "red",
-              borderColor: "black",
-              color: "white",
-            },
-          ],
-        },
-      ],
+      foo: [],
     };
   },
-  mounted(){
+  created(){
       //let url = `http://51.178.136.190:93/apipro/directories/`
       let url = `http://localhost:8000/api/v1/prayer_time/`
 
@@ -264,10 +267,14 @@ export default {
       fetch(url)
           .then(response => response.json())
           .then(json => {
-              this.foo[0].schedules = json;
+            setTimeout(() => {
+              this.foo = data_schedules
               //console.log("created fetch =" + this.foo[0].schedules[0].title)
-              console.log("created fetch =" + json[0].title)
-              })  
+              console.log("add data_schedules in fetch =" + json)
+              //alert("load data_schedules ...")
+              this.message = "load data_schedules ..."
+            }, 500);
+          })  
           .catch(err => {
               console.error(err)
           });
